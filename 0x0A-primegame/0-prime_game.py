@@ -1,18 +1,21 @@
 #!/usr/bin/python3
+"""
+This module defines the isWinner function used to determine
+the winner of a prime game between Maria and Ben.
+"""
 
 
 def isWinner(x, nums):
     """
-    Determines the winner of a prime number game.
+    Determines the winner of a prime game played over x rounds.
 
     Parameters:
-    x (int): The number of rounds.
-    nums (list): A list of integers, where each integer represents
-    the maximum number for that round.
+    x (int): Number of rounds.
+    nums (list of int): The upper limit of numbers for each round.
 
     Returns:
-    str or None: The name of the player with the most wins ("Maria" or "Ben").
-                 Returns None if there's a tie or invalid input.
+    str or None: The name of the player with the most wins ("Maria" or "Ben"),
+    or None if the winner cannot be determined.
     """
     if not nums or x < 1:
         return None
@@ -21,13 +24,11 @@ def isWinner(x, nums):
     sieve = [True for _ in range(max_n + 1)]
     sieve[0] = sieve[1] = False
 
-    # Sieve of Eratosthenes to find all primes up to max_n
     for i in range(2, int(max_n ** 0.5) + 1):
         if sieve[i]:
             for j in range(i * i, max_n + 1, i):
                 sieve[j] = False
 
-    # Precompute number of primes up to each number 0 to max_n
     prime_counts = [0] * (max_n + 1)
     count = 0
     for i in range(1, max_n + 1):
@@ -35,7 +36,6 @@ def isWinner(x, nums):
             count += 1
         prime_counts[i] = count
 
-    # Determine winner for each round
     maria_wins = 0
     ben_wins = 0
 
@@ -49,5 +49,4 @@ def isWinner(x, nums):
         return "Maria"
     elif ben_wins > maria_wins:
         return "Ben"
-    else:
-        return None
+    return None
