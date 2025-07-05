@@ -2,6 +2,18 @@
 
 
 def isWinner(x, nums):
+    """
+    Determines the winner of a prime number game.
+
+    Parameters:
+    x (int): The number of rounds.
+    nums (list): A list of integers, where each integer represents
+    the maximum number for that round.
+
+    Returns:
+    str or None: The name of the player with the most wins ("Maria" or "Ben").
+                 Returns None if there's a tie or invalid input.
+    """
     if not nums or x < 1:
         return None
 
