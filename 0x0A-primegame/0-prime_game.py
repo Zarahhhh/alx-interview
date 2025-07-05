@@ -1,36 +1,38 @@
 #!/usr/bin/python3
-"""Module for Prime Game algorithm"""
 
 
 def isWinner(x, nums):
     if not nums or x < 1:
         return None
 
-    # Find the maximum number in nums
-    max_num = max(nums)
+    max_n = max(nums)
+    sieve = [True for _ in range(max_n + 1)]
+    sieve[0] = sieve[1] = False
 
-    # Step 1: Create a list of prime counts up to max_num using the sieve
-    primes = [0] * (max_num + 1)
-    is_prime = [True] * (max_num + 1)
-    is_prime[0] = is_prime[1] = False
+    # Sieve of Eratosthenes to find all primes up to max_n
+    for i in range(2, int(max_n ** 0.5) + 1):
+        if sieve[i]:
+            for j in range(i * i, max_n + 1, i):
+                sieve[j] = False
 
-    for i in range(2, max_num + 1):
-        if is_prime[i]:
-            for j in range(i * 2, max_num + 1, i):
-                is_prime[j] = False
-        primes[i] = primes[i - 1] + (1 if is_prime[i] else 0)
+    # Precompute number of primes up to each number 0 to max_n
+    prime_counts = [0] * (max_n + 1)
+    count = 0
+    for i in range(1, max_n + 1):
+        if sieve[i]:
+            count += 1
+        prime_counts[i] = count
 
-    # Step 2: Play the game for each round and count wins
+    # Determine winner for each round
     maria_wins = 0
     ben_wins = 0
 
     for n in nums:
-        if primes[n] % 2 == 0:
-            ben_wins += 1
-        else:
+        if prime_counts[n] % 2 == 1:
             maria_wins += 1
+        else:
+            ben_wins += 1
 
-    # Step 3: Return who won the most rounds
     if maria_wins > ben_wins:
         return "Maria"
     elif ben_wins > maria_wins:
